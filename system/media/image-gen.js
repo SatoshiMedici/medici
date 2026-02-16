@@ -16,7 +16,8 @@ const fs = require('fs');
 const path = require('path');
 
 const API_KEY = process.env.GEMINI_API_KEY;
-const USE_FREE = !process.env.GEMINI_BILLING || process.env.IMAGE_PROVIDER === 'free';
+const XAI_API_KEY = process.env.XAI_API_KEY;
+const USE_FREE = !XAI_API_KEY && (!process.env.GEMINI_BILLING || process.env.IMAGE_PROVIDER === 'free');
 
 const STYLE_PREFIXES = {
   brand: 'Professional, premium brand aesthetic. Dark background with warm gold (#C9A84C) accents. Clean, minimal, Stripe/Linear design language.',
@@ -134,6 +135,61 @@ function geminiGenerateContent(prompt) {
   });
 }
 
+function grokImageRequest(prompt, size) {
+  return new Promise((resolve, reject) => {
+    const payload = JSON.stringify({
+      model: 'grok-2-image',
+      prompt: prompt,
+      n: 1,
+      response_format: 'b64_json',
+    });
+
+    const options = {
+      hostname: 'api.x.ai',
+      path: '/v1/images/generations',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${XAI_API_KEY}`,
+        'Content-Length': Buffer.byteLength(payload),
+      },
+    };
+
+    const req = https.request(options, res => {
+      let data = '';
+      res.on('data', c => data += c);
+      res.on('end', () => {
+        try {
+          const json = JSON.parse(data);
+          if (json.error) {
+            reject(new Error(json.error.message || JSON.stringify(json.error)));
+            return;
+          }
+          const imgData = json.data?.[0]?.b64_json;
+          if (imgData) {
+            resolve({
+              data: Buffer.from(imgData, 'base64'),
+              mimeType: 'image/png',
+            });
+          } else if (json.data?.[0]?.url) {
+            // URL response — fetch it
+            https.get(json.data[0].url, imgRes => {
+              const chunks = [];
+              imgRes.on('data', c => chunks.push(c));
+              imgRes.on('end', () => resolve({ data: Buffer.concat(chunks), mimeType: 'image/png' }));
+            }).on('error', reject);
+          } else {
+            reject(new Error('No image in response'));
+          }
+        } catch (e) { reject(e); }
+      });
+    });
+    req.on('error', reject);
+    req.write(payload);
+    req.end();
+  });
+}
+
 function freeImageRequest(prompt, size) {
   // Use picfinder.ai free endpoint
   return new Promise((resolve, reject) => {
@@ -214,9 +270,24 @@ async function main() {
   console.log(`🎨 Generating image (style: ${style})...`);
 
   try {
-    const { data, mimeType } = USE_FREE
-      ? await freeImageRequest(fullPrompt, opts.size)
-      : await geminiRequest(fullPrompt);
+    let result;
+    if (XAI_API_KEY) {
+      try {
+        result = await grokImageRequest(fullPrompt, opts.size);
+        console.log('  Provider: Grok (xAI)');
+      } catch (e) {
+        console.log(`  Grok failed (${e.message.substring(0, 60)}...), falling back...`);
+        result = await freeImageRequest(fullPrompt, opts.size);
+        console.log('  Provider: Local SVG');
+      }
+    } else if (USE_FREE) {
+      result = await freeImageRequest(fullPrompt, opts.size);
+      console.log('  Provider: Local SVG');
+    } else {
+      result = await geminiRequest(fullPrompt);
+      console.log('  Provider: Gemini');
+    }
+    const { data, mimeType } = result;
     const ext = mimeType?.includes('png') ? 'png' : 'jpg';
     const name = opts.name || opts.prompt.toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 40);
     
