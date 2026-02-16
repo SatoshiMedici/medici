@@ -256,6 +256,21 @@
       transition: background var(--transition-speed);
     }
     .hero-content { position: relative; z-index: 2; max-width: 800px; }
+
+    /* Logo + Name lockup */
+    .hero-lockup {
+      display: flex; align-items: center; gap: 16px;
+      margin-bottom: 32px;
+      opacity: 0; transform: translateY(30px);
+      animation: lockupReveal 0.8s cubic-bezier(0.16,1,0.3,1) 0.1s forwards;
+    }
+    @keyframes lockupReveal { to { opacity: 1; transform: translateY(0); } }
+    .hero-lockup .hero-logo { width: 56px; height: 56px; }
+    .hero-brand-text {
+      font-family: var(--font-heading); font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 600; color: var(--gold); letter-spacing: 0.15em;
+      transition: color var(--transition-speed);
+    }
     .hero-content h1 {
       margin-bottom: 1.5rem; overflow: hidden;
     }
@@ -641,11 +656,14 @@
       <div class="float-shape line" style="width:80px;top:30%;left:8%;transform:rotate(25deg);animation:floatDrift3 12s ease-in-out infinite"></div>
 
       <div class="container hero-content">
-        <!-- Hero logo -->
-        <svg class="logo-svg hero-logo reveal-scale" viewBox="0 0 48 48" aria-hidden="true" style="margin-bottom:24px;">
-          <path class="m-stroke" d="M6 38 L6 14 L16 26 L24 10 L32 26 L42 14 L42 38"/>
-        </svg>
-        <h1 id="heroTitle">Growth,<br>engineered.</h1>
+        <!-- Logo + Name lockup -->
+        <div class="hero-lockup" id="heroLockup">
+          <svg class="logo-svg hero-logo" viewBox="0 0 48 48" aria-hidden="true">
+            <path class="m-stroke" d="M6 38 L6 14 L16 26 L24 10 L32 26 L42 14 L42 38"/>
+          </svg>
+          <span class="hero-brand-text">MEDICI</span>
+        </div>
+        <h1 id="heroTitle">Growth, engineered.</h1>
         <p class="hero-sub" id="heroSub">AI-first marketing infrastructure for startups and tech companies.</p>
         <div class="hero-btns" id="heroCta">
           <a href="#contact" class="btn">Book a Discovery Call</a>
