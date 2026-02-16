@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MEDICI — Growth, engineered.</title>
+  <meta name="description" content="AI-first marketing infrastructure for startups and tech companies. We build the systems that scale your brand — faster and smarter than any traditional agency.">
+  <meta property="og:title" content="MEDICI — Growth, engineered.">
+  <meta property="og:description" content="AI-first marketing infrastructure for startups and tech companies. We build the systems that scale your brand — faster and smarter than any traditional agency.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://medici.codes">
+  <meta property="og:site_name" content="MEDICI">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MEDICI — Growth, engineered.">
+  <meta name="twitter:description" content="AI-first marketing infrastructure for startups and tech companies.">
+  <link rel="canonical" href="https://medici.codes">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ========================================
+       MEDICI — Global Reset & Variables
+       ======================================== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #0A0A0A;
+      --gold: #C9A84C;
+      --white: #F5F5F5;
+      --grey: #999999;
+      --dark-grey: #555555;
+      --font-heading: 'Playfair Display', Georgia, serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
+      --max-width: 1200px;
+      --section-pad: clamp(80px, 10vw, 140px);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--grey);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ========================================
+       Typography
+       ======================================== */
+    h1, h2, h3, h4 {
+      font-family: var(--font-heading);
+      color: var(--white);
+      font-weight: 500;
+      line-height: 1.2;
+    }
+
+    h1 { font-size: clamp(2.8rem, 6vw, 5rem); letter-spacing: -0.02em; }
+    h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1.5rem; }
+    h3 { font-size: clamp(1.2rem, 2vw, 1.5rem); margin-bottom: 0.75rem; }
+
+    p { max-width: 680px; }
+
+    a { color: var(--gold); text-decoration: none; transition: opacity 0.2s; }
+    a:hover { opacity: 0.8; }
+
+    /* ========================================
+       Layout Utilities
+       ======================================== */
+    .container {
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 clamp(20px, 4vw, 40px);
+    }
+
+    section {
+      padding: var(--section-pad) 0;
+    }
+
+    /* Gold divider */
+    .divider {
+      width: 100%;
+      max-width: var(--max-width);
+      margin: 0 auto;
+      height: 1px;
+      background: var(--gold);
+      opacity: 0.3;
+    }
+
+    /* ========================================
+       Buttons
+       ======================================== */
+    .btn {
+      display: inline-block;
+      padding: 14px 32px;
+      background: var(--gold);
+      color: var(--bg);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.2s;
+      text-decoration: none;
+    }
+    .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn:active { transform: translateY(0); }
+
+    .btn-outline {
+      background: transparent;
+      border: 1px solid var(--gold);
+      color: var(--gold);
+    }
+
+    /* ========================================
+       Scroll Animations
+       ======================================== */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ========================================
+       Nav
+       ======================================== */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 20px 0;
+      transition: background 0.3s, padding 0.3s;
+    }
+    nav.scrolled {
+      background: var(--bg);
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(201, 168, 76, 0.15);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .wordmark {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.15em;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      color: var(--grey);
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--white); opacity: 1; }
+
+    .nav-links .btn { padding: 10px 24px; font-size: 0.85rem; }
+
+    /* Mobile nav toggle */
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--white);
+      margin: 5px 0;
+      transition: 0.3s;
+    }
+
+    @media (max-width: 768px) {
+      .nav-toggle { display: block; }
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        max-width: 300px;
+        height: 100vh;
+        background: #111;
+        flex-direction: column;
+        justify-content: center;
+        gap: 32px;
+        transition: right 0.3s;
+        padding: 40px;
+      }
+      .nav-links.open { right: 0; }
+    }
+
+    /* ========================================
+       Hero
+       ======================================== */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Subtle CSS grid background */
+    .hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      animation: gridShift 20s linear infinite;
+    }
+    @keyframes gridShift {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(60px, 60px); }
+    }
+
+    .hero-content { position: relative; z-index: 1; }
+    .hero-content h1 { color: var(--white); margin-bottom: 1.5rem; }
+    .hero-content p {
+      font-size: clamp(1.05rem, 2vw, 1.2rem);
+      color: var(--grey);
+      margin-bottom: 2.5rem;
+      max-width: 600px;
+    }
+
+    /* ========================================
+       AI-First Difference — 3 Columns
+       ======================================== */
+    .three-col {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px;
+      margin-top: 60px;
+    }
+    @media (max-width: 768px) {
+      .three-col { grid-template-columns: 1fr; gap: 40px; }
+    }
+
+    .three-col h3 { color: var(--gold); }
+
+    /* ========================================
+       Capability Cards
+       ======================================== */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 32px;
+      margin-top: 60px;
+    }
+    @media (max-width: 768px) {
+      .card-grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      border: 1px solid rgba(201,168,76,0.2);
+      padding: clamp(28px, 4vw, 40px);
+      border-radius: 2px;
+      transition: border-color 0.3s;
+    }
+    .card:hover { border-color: var(--gold); }
+    .card h3 { color: var(--white); }
+    .card .price {
+      color: var(--gold);
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-top: 16px;
+      display: inline-block;
+    }
+
+    /* ========================================
+       AI Stack Table (Terminal Style)
+       ======================================== */
+    .ai-stack {
+      border: 1px solid var(--gold);
+      border-radius: 2px;
+      overflow: hidden;
+      margin-top: 48px;
+      font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+      font-size: 0.9rem;
+    }
+    .ai-stack-header {
+      display: grid;
+      grid-template-columns: 1fr 2fr 2fr;
+      padding: 16px 24px;
+      background: rgba(201,168,76,0.08);
+      color: var(--gold);
+      font-weight: 600;
+      border-bottom: 1px solid var(--gold);
+    }
+    .ai-stack-row {
+      display: grid;
+      grid-template-columns: 1fr 2fr 2fr;
+      padding: 14px 24px;
+      border-bottom: 1px solid rgba(201,168,76,0.1);
+    }
+    .ai-stack-row:last-child { border-bottom: none; }
+    .ai-stack-row span:first-child { color: var(--white); font-weight: 500; }
+
+    @media (max-width: 768px) {
+      .ai-stack-header, .ai-stack-row {
+        grid-template-columns: 1fr;
+        gap: 4px;
+        padding: 14px 20px;
+      }
+      .ai-stack-header span:not(:first-child) { display: none; }
+      .ai-stack-row span::before {
+        display: inline;
+        font-weight: 600;
+        color: var(--gold);
+      }
+    }
+
+    /* ========================================
+       Comparison Table
+       ======================================== */
+    .comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 48px;
+      margin-top: 60px;
+    }
+    @media (max-width: 768px) {
+      .comparison { grid-template-columns: 1fr; gap: 32px; }
+    }
+
+    .comparison-col h3 {
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+    }
+    .comparison-col.traditional h3 { color: var(--grey); }
+    .comparison-col.medici h3 { color: var(--gold); }
+
+    .comparison-item {
+      margin-bottom: 24px;
+    }
+    .comparison-item .label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--dark-grey);
+      margin-bottom: 4px;
+    }
+    .comparison-item .value {
+      color: var(--grey);
+      font-size: 0.95rem;
+    }
+    .medici .comparison-item .value { color: var(--white); }
+
+    /* ========================================
+       About / Founder
+       ======================================== */
+    .credentials {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 32px 0;
+      list-style: none;
+    }
+    .credentials li {
+      padding: 8px 16px;
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 2px;
+      font-size: 0.85rem;
+      color: var(--white);
+    }
+
+    /* ========================================
+       FAQ Accordion
+       ======================================== */
+    .faq-item {
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 24px 0;
+      font-family: var(--font-body);
+      font-size: 1.05rem;
+      font-weight: 500;
+      color: var(--white);
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+    }
+    .faq-question:hover { color: var(--gold); }
+    .faq-question::after {
+      content: '+';
+      font-size: 1.4rem;
+      color: var(--gold);
+      flex-shrink: 0;
+      transition: transform 0.3s;
+    }
+    .faq-item.open .faq-question::after {
+      transform: rotate(45deg);
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease, padding 0.3s;
+    }
+    .faq-item.open .faq-answer {
+      max-height: 300px;
+    }
+    .faq-answer p {
+      padding-bottom: 24px;
+      color: var(--grey);
+      line-height: 1.8;
+    }
+
+    /* ========================================
+       Final CTA
+       ======================================== */
+    .cta-final {
+      text-align: center;
+    }
+    .cta-final h2 { margin-bottom: 1rem; }
+    .cta-final p { margin: 0 auto 2.5rem; }
+    .cta-final .email-link {
+      display: block;
+      margin-top: 20px;
+      color: var(--grey);
+      font-size: 0.95rem;
+    }
+
+    /* ========================================
+       Footer
+       ======================================== */
+    footer {
+      padding: 60px 0 40px;
+      border-top: 1px solid rgba(201,168,76,0.15);
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 32px;
+    }
+    .footer-brand .wordmark { font-size: 1.2rem; }
+    .footer-brand p { font-size: 0.85rem; margin-top: 8px; }
+    .footer-links { display: flex; gap: 24px; font-size: 0.85rem; }
+    .footer-meta {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 40px;
+      padding-top: 24px;
+      border-top: 1px solid rgba(201,168,76,0.1);
+      font-size: 0.8rem;
+      color: var(--dark-grey);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    /* ========================================
+       Section intro text
+       ======================================== */
+    .section-intro {
+      font-size: clamp(1.05rem, 2vw, 1.15rem);
+      max-width: 640px;
+      margin-top: 8px;
+    }
+
+    .text-center { text-align: center; }
+    .text-center p { margin-left: auto; margin-right: auto; }
+    .mt-48 { margin-top: 48px; }
+  </style>
+</head>
+
+<body>
+  <!-- ========================================
+       Navigation
+       ======================================== -->
+  <nav aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a href="#" class="wordmark" aria-label="MEDICI home">MEDICI</a>
+      <button class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" role="list">
+        <li><a href="#how-we-work">How We Work</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#faq">FAQ</a></li>
+        <li><a href="#contact" class="btn">Book a Call</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main>
+    <!-- ========================================
+         Hero
+         ======================================== -->
+    <section class="hero" id="hero">
+      <div class="container hero-content">
+        <h1>Growth, engineered.</h1>
+        <p>AI-first marketing infrastructure for startups and tech companies. We build the systems that scale your brand — faster and smarter than any traditional agency.</p>
+        <a href="#contact" class="btn">Book a Discovery Call</a>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ========================================
+         The AI-First Difference
+         ======================================== -->
+    <section id="ai-first">
+      <div class="container fade-in">
+        <h2>The AI-First Difference</h2>
+        <p class="section-intro">AI isn't a feature we bolt on. It's the operating system of everything we do.</p>
+        <div class="three-col">
+          <div>
+            <h3>10x Output</h3>
+            <p>AI-powered content engines produce in days what traditional agencies deliver in weeks. Every piece is human-reviewed, strategically aligned, and on-brand.</p>
+          </div>
+          <div>
+            <h3>Real-Time Intelligence</h3>
+            <p>No more monthly PDF reports. Our AI systems monitor, analyze, and surface insights continuously — so we optimize in real-time, not in retrospect.</p>
+          </div>
+          <div>
+            <h3>Compounding Systems</h3>
+            <p>We don't run campaigns. We build marketing infrastructure — AI workflows that learn, improve, and compound over time. The longer we work together, the smarter your growth engine gets.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ========================================
+         How We Work
+         ======================================== -->
+    <section id="how-we-work">
+      <div class="container fade-in">
+        <h2>How We Work</h2>
+        <p class="section-intro">We don't sell packages. We scope each engagement around what your company actually needs — then build the AI-powered system to deliver it.</p>
+        <div class="card-grid">
+          <div class="card">
+            <h3>Brand &amp; Narrative</h3>
+            <p>Positioning, messaging, voice, and investor narrative — all built on AI-driven market and competitor analysis.</p>
+            <span class="price">From €3,000/mo</span>
+          </div>
+          <div class="card">
+            <h3>Content Engine</h3>
+            <p>Social, long-form, threads, newsletters, and SEO — powered by AI content pipelines with human editorial oversight.</p>
+          </div>
+          <div class="card">
+            <h3>Growth &amp; Distribution</h3>
+            <p>Paid ads, PR, KOL programs, partnerships — with AI handling targeting, optimization, and personalization at scale.</p>
+            <span class="price">From €5,500/mo</span>
+          </div>
+          <div class="card">
+            <h3>Full-Stack Marketing</h3>
+            <p>GTM strategy, launches, events, dashboards, investor content — the complete AI-augmented marketing department.</p>
+            <span class="price">From €8,000/mo</span>
+          </div>
+        </div>
+        <div class="text-center mt-48">
+          <p style="margin: 0 auto 1.5rem; color: var(--grey);">Every engagement starts with a discovery call.</p>
+          <a href="#contact" class="btn">Book a Discovery Call</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ========================================
+         How AI Powers Every Layer
+         ======================================== -->
+    <section id="ai-stack">
+      <div class="container fade-in">
+        <h2>How AI Powers Every Layer</h2>
+        <div class="ai-stack">
+          <div class="ai-stack-header">
+            <span>Layer</span>
+            <span>What AI Does</span>
+            <span>The Result</span>
+          </div>
+          <div class="ai-stack-row">
+            <span>Content</span>
+            <span>Drafts, variants, SEO optimization</span>
+            <span>10x output, consistent quality</span>
+          </div>
+          <div class="ai-stack-row">
+            <span>Analytics</span>
+            <span>Real-time dashboards, AI summaries</span>
+            <span>Always-on intelligence</span>
+          </div>
+          <div class="ai-stack-row">
+            <span>Advertising</span>
+            <span>Auto-generated copy, A/B testing</span>
+            <span>Faster optimization cycles</span>
+          </div>
+          <div class="ai-stack-row">
+            <span>Outreach</span>
+            <span>Personalized at scale</span>
+            <span>5x response rates</span>
+          </div>
+          <div class="ai-stack-row">
+            <span>Reporting</span>
+            <span>Auto-generated weekly reports</span>
+            <span>Clients always informed</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ========================================
+         The Medici Difference (Comparison)
+         ======================================== -->
+    <section id="difference">
+      <div class="container fade-in">
+        <h2>The Medici Difference</h2>
+        <div class="comparison">
+          <div class="comparison-col traditional">
+            <h3>Traditional Agency</h3>
+            <div class="comparison-item"><div class="label">Speed</div><div class="value">Weeks per deliverable</div></div>
+            <div class="comparison-item"><div class="label">Cost</div><div class="value">$10K+/mo retainers</div></div>
+            <div class="comparison-item"><div class="label">Strategy</div><div class="value">Junior account managers</div></div>
+            <div class="comparison-item"><div class="label">Output</div><div class="value">Manual production</div></div>
+            <div class="comparison-item"><div class="label">Reporting</div><div class="value">Monthly PDFs</div></div>
+            <div class="comparison-item"><div class="label">Adaptability</div><div class="value">Slow to pivot</div></div>
+          </div>
+          <div class="comparison-col medici">
+            <h3>MEDICI</h3>
+            <div class="comparison-item"><div class="label">Speed</div><div class="value">Days — AI accelerates everything</div></div>
+            <div class="comparison-item"><div class="label">Cost</div><div class="value">From €3,000/mo — premium but efficient</div></div>
+            <div class="comparison-item"><div class="label">Strategy</div><div class="value">Founder-level strategic thinking</div></div>
+            <div class="comparison-item"><div class="label">Output</div><div class="value">AI pipelines + human oversight</div></div>
+            <div class="comparison-item"><div class="label">Reporting</div><div class="value">Real-time dashboards</div></div>
+            <div class="comparison-item"><div class="label">Adaptability</div><div class="value">AI systems that learn and optimize continuously</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ========================================
+         Built By a Builder
+         ======================================== -->
+    <section id="about">
+      <div class="container fade-in">
+        <h2>Built By a Builder</h2>
+        <p>Medici was founded by a marketing leader with 7+ years in Web3 and tech — not an agency person who discovered AI last year.</p>
+        <ul class="credentials" role="list">
+          <li>Sui Foundation Ambassador</li>
+          <li>Marketing Manager, Interest Labs — 1st Place Sui Overflow Hackathon</li>
+          <li>Community Lead, DeepSquare</li>
+          <li>Lugano Plan ₿ Bitcoin Challenge Winner (with Tether/Paolo Ardoino)</li>
+          <li>Speaker &amp; Ecosystem Builder across Web3</li>
+        </ul>
+        <p>Every client works directly with the founder. No handoffs. No junior team. Senior strategy meets AI-powered execution.</p>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ========================================
+         FAQ
+         ======================================== -->
+    <section id="faq">
+      <div class="container fade-in">
+        <h2>Frequently Asked Questions</h2>
+        <div class="mt-48">
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">What does AI-first actually mean?</button>
+            <div class="faq-answer" role="region"><p>AI isn't a bolt-on tool for us — it's the operating system. Every workflow, from content creation to analytics to outreach, is built on AI pipelines. This means faster delivery, smarter optimization, and systems that compound over time. But every output is human-reviewed and strategically directed.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">Do you only work with crypto/Web3 companies?</button>
+            <div class="faq-answer" role="region"><p>No. While we have deep roots in Web3, our model works for any startup or tech company. If you're building something ambitious and need marketing infrastructure that scales, we're a fit.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">What's the minimum commitment?</button>
+            <div class="faq-answer" role="region"><p>3 months. Marketing systems need time to build momentum. We're not interested in one-off projects — we build infrastructure that compounds.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">How fast can you start?</button>
+            <div class="faq-answer" role="region"><p>Most engagements kick off within a week of the discovery call. AI-first means no lengthy onboarding — we move fast.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">Why not just hire in-house?</button>
+            <div class="faq-answer" role="region"><p>An in-house marketing hire takes 3-6 months to recruit, onboard, and ramp up — and costs €60-100K+/year before tools and overhead. With Medici, you get a senior strategist + AI-powered execution from day one, at a fraction of the cost.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" aria-expanded="false">What AI tools do you use?</button>
+            <div class="faq-answer" role="region"><p>We use a combination of frontier AI models (Claude, GPT-4), custom automation workflows, and purpose-built pipelines for content, analytics, and outreach. The specific stack evolves — we always use whatever is best. The point isn't the tools, it's the system.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ========================================
+         Final CTA
+         ======================================== -->
+    <section id="contact">
+      <div class="container cta-final fade-in">
+        <h2>Let's build your growth engine.</h2>
+        <p>Every engagement starts with a 30-minute discovery call. No pitch decks. No pressure. Just a conversation about what you're building and how we can help.</p>
+        <a href="#contact" class="btn">Book a Discovery Call</a>
+        <span class="email-link">Or email us at <a href="mailto:hello@medici.codes">hello@medici.codes</a></span>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========================================
+       Footer
+       ======================================== -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <a href="#" class="wordmark">MEDICI</a>
+          <p>Growth, engineered.</p>
+        </div>
+        <div class="footer-links">
+          <a href="https://x.com/SatoshiMedici" target="_blank" rel="noopener noreferrer" aria-label="MEDICI on X (Twitter)">X</a>
+          <a href="#" target="_blank" rel="noopener noreferrer" aria-label="MEDICI on LinkedIn">LinkedIn</a>
+          <a href="mailto:hello@medici.codes">hello@medici.codes</a>
+        </div>
+      </div>
+      <div class="footer-meta">
+        <span>&copy; 2026 Medici. All rights reserved.</span>
+        <span>Lisbon, Portugal · Remote-first, Global</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================
+       JavaScript
+       ======================================== -->
+  <script>
+    /* --- Nav scroll behavior --- */
+    const nav = document.querySelector('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+    }, { passive: true });
+
+    /* --- Mobile nav toggle --- */
+    const toggle = document.querySelector('.nav-toggle');
+    const links = document.querySelector('.nav-links');
+    toggle.addEventListener('click', () => {
+      const open = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open);
+    });
+    // Close mobile nav on link click
+    links.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        links.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+      });
+    });
+
+    /* --- Scroll-triggered fade-in --- */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    /* --- FAQ Accordion --- */
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        const isOpen = item.classList.contains('open');
+        // Close all
+        document.querySelectorAll('.faq-item.open').forEach(i => {
+          i.classList.remove('open');
+          i.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
+        });
+        // Toggle current
+        if (!isOpen) {
+          item.classList.add('open');
+          btn.setAttribute('aria-expanded', 'true');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
