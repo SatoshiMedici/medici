@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/SatoshiMedici/medici#readme",
   "dependencies": {
+    "resend": "^6.9.2",
     "twitter-api-v2": "^1.29.0"
   }
 }
