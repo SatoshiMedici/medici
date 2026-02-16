@@ -189,7 +189,7 @@
     /* ===== SVG LOGO ===== */
     .logo-svg { display: inline-block; vertical-align: middle; }
     .logo-svg .m-stroke { fill: none; stroke: var(--gold); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; transition: stroke var(--transition-speed), fill var(--transition-speed); }
-    [data-theme="dark"] .logo-svg .m-stroke { fill: var(--gold); stroke: var(--gold); stroke-width: 1.5; }
+    [data-theme="dark"] .logo-svg .m-stroke { fill: none; stroke: var(--gold); stroke-width: 3; }
     .logo-svg.nav-logo { width: 36px; height: 36px; }
     .logo-svg.hero-logo { width: 120px; height: 120px; }
     .logo-svg.footer-logo { width: 28px; height: 28px; }
@@ -202,6 +202,7 @@
     }
     [data-theme="dark"] .hero-watermark { opacity: 0.03; }
     .hero-watermark .m-stroke { fill: var(--gold); stroke: none; }
+    [data-theme="dark"] .hero-watermark .m-stroke { fill: var(--gold); stroke: none; }
 
     /* ===== NAV ===== */
     nav {
@@ -218,7 +219,6 @@
     .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
     .nav-links a { color: var(--grey); font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
     .nav-links a:hover { color: var(--heading); opacity: 1; }
-    .nav-links .btn { padding: 10px 28px; font-size: 0.85rem; }
 
     /* Theme toggle */
     .theme-toggle {
@@ -621,7 +621,6 @@
             <svg class="moon-icon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/></svg>
           </button>
         </li>
-        <li><a href="#contact" class="btn">Book a Call</a></li>
       </ul>
     </div>
   </nav>
