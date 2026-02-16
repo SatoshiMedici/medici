@@ -16,24 +16,25 @@
   <link rel="canonical" href="https://medici.codes">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 
   <style>
-    /* ========================================
-       MEDICI — Global Reset & Variables
-       ======================================== */
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
       --bg: #0A0A0A;
+      --bg-elevated: #111111;
       --gold: #C9A84C;
+      --gold-dim: rgba(201,168,76,0.15);
+      --gold-glow: rgba(201,168,76,0.4);
       --white: #F5F5F5;
       --grey: #999999;
       --dark-grey: #555555;
       --font-heading: 'Playfair Display', Georgia, serif;
       --font-body: 'Inter', -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
       --max-width: 1200px;
-      --section-pad: clamp(80px, 10vw, 140px);
+      --section-pad: clamp(100px, 12vw, 160px);
     }
 
     html { scroll-behavior: smooth; }
@@ -45,464 +46,387 @@
       font-size: 16px;
       line-height: 1.7;
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
-    /* ========================================
-       Typography
-       ======================================== */
+    /* ========== Typography ========== */
     h1, h2, h3, h4 {
       font-family: var(--font-heading);
       color: var(--white);
       font-weight: 500;
-      line-height: 1.2;
+      line-height: 1.15;
     }
-
-    h1 { font-size: clamp(2.8rem, 6vw, 5rem); letter-spacing: -0.02em; }
-    h2 { font-size: clamp(2rem, 4vw, 3rem); margin-bottom: 1.5rem; }
+    h1 { font-size: clamp(3.5rem, 8vw, 7rem); letter-spacing: -0.03em; }
+    h2 { font-size: clamp(2.2rem, 4.5vw, 3.5rem); margin-bottom: 1.5rem; letter-spacing: -0.02em; }
     h3 { font-size: clamp(1.2rem, 2vw, 1.5rem); margin-bottom: 0.75rem; }
-
     p { max-width: 680px; }
-
     a { color: var(--gold); text-decoration: none; transition: opacity 0.2s; }
     a:hover { opacity: 0.8; }
 
-    /* ========================================
-       Layout Utilities
-       ======================================== */
-    .container {
-      width: 100%;
-      max-width: var(--max-width);
-      margin: 0 auto;
-      padding: 0 clamp(20px, 4vw, 40px);
-    }
+    .container { width: 100%; max-width: var(--max-width); margin: 0 auto; padding: 0 clamp(20px, 4vw, 40px); }
+    section { padding: var(--section-pad) 0; position: relative; }
 
-    section {
-      padding: var(--section-pad) 0;
-    }
-
-    /* Gold divider */
+    /* ========== Gold Divider with glow ========== */
     .divider {
-      width: 100%;
-      max-width: var(--max-width);
-      margin: 0 auto;
-      height: 1px;
-      background: var(--gold);
-      opacity: 0.3;
+      width: 100%; max-width: var(--max-width); margin: 0 auto;
+      height: 1px; background: var(--gold); opacity: 0.3;
+      box-shadow: 0 0 20px rgba(201,168,76,0.15);
     }
 
-    /* ========================================
-       Buttons
-       ======================================== */
+    /* ========== Buttons ========== */
     .btn {
-      display: inline-block;
-      padding: 14px 32px;
-      background: var(--gold);
-      color: var(--bg);
-      font-family: var(--font-body);
-      font-size: 0.95rem;
-      font-weight: 600;
-      border: none;
-      border-radius: 2px;
-      cursor: pointer;
-      transition: opacity 0.2s, transform 0.2s;
-      text-decoration: none;
+      display: inline-block; padding: 16px 36px;
+      background: var(--gold); color: var(--bg);
+      font-family: var(--font-body); font-size: 0.95rem; font-weight: 600;
+      border: none; border-radius: 2px; cursor: pointer;
+      text-decoration: none; position: relative; overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.3s;
     }
-    .btn:hover { opacity: 0.9; transform: translateY(-1px); }
-    .btn:active { transform: translateY(0); }
-
-    .btn-outline {
-      background: transparent;
-      border: 1px solid var(--gold);
-      color: var(--gold);
-    }
-
-    /* ========================================
-       Scroll Animations
-       ======================================== */
-    .fade-in {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s ease, transform 0.7s ease;
-    }
-    .fade-in.visible {
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(201,168,76,0.3);
       opacity: 1;
-      transform: translateY(0);
+    }
+    .btn:active { transform: translateY(0); }
+    /* Shimmer effect on button */
+    .btn::after {
+      content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      animation: btnShimmer 3s infinite;
+    }
+    @keyframes btnShimmer {
+      0% { left: -100%; } 60% { left: 100%; } 100% { left: 100%; }
     }
 
-    /* ========================================
-       Nav
-       ======================================== */
+    /* ========== Scroll Animations ========== */
+    .fade-in {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .fade-in-left { opacity: 0; transform: translateX(-60px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+    .fade-in-left.visible { opacity: 1; transform: translateX(0); }
+    .fade-in-right { opacity: 0; transform: translateX(60px); transition: opacity 0.8s cubic-bezier(0.16,1,0.3,1), transform 0.8s cubic-bezier(0.16,1,0.3,1); }
+    .fade-in-right.visible { opacity: 1; transform: translateX(0); }
+    .stagger > * { opacity: 0; transform: translateY(30px); transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1); }
+    .stagger.visible > *:nth-child(1) { transition-delay: 0s; }
+    .stagger.visible > *:nth-child(2) { transition-delay: 0.12s; }
+    .stagger.visible > *:nth-child(3) { transition-delay: 0.24s; }
+    .stagger.visible > *:nth-child(4) { transition-delay: 0.36s; }
+    .stagger.visible > * { opacity: 1; transform: translateY(0); }
+
+    /* ========== Cursor Glow (desktop only) ========== */
+    .cursor-glow {
+      position: fixed; width: 600px; height: 600px;
+      pointer-events: none; z-index: 0;
+      background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s;
+      opacity: 0;
+    }
+    .cursor-glow.active { opacity: 1; }
+
+    /* ========== Nav ========== */
     nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 1000;
-      padding: 20px 0;
-      transition: background 0.3s, padding 0.3s;
+      position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+      padding: 24px 0; transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
     }
     nav.scrolled {
-      background: var(--bg);
-      padding: 14px 0;
-      border-bottom: 1px solid rgba(201, 168, 76, 0.15);
+      background: rgba(10,10,10,0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      padding: 16px 0; border-bottom: 1px solid var(--gold-dim);
     }
-
-    .nav-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; }
     .wordmark {
-      font-family: var(--font-heading);
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: var(--gold);
-      letter-spacing: 0.15em;
-      text-decoration: none;
+      font-family: var(--font-heading); font-size: 1.5rem; font-weight: 600;
+      color: var(--gold); letter-spacing: 0.15em; text-decoration: none;
     }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 36px;
-      list-style: none;
-    }
-    .nav-links a {
-      color: var(--grey);
-      font-size: 0.9rem;
-      font-weight: 500;
-      transition: color 0.2s;
-    }
+    .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
+    .nav-links a { color: var(--grey); font-size: 0.9rem; font-weight: 500; transition: color 0.2s; }
     .nav-links a:hover { color: var(--white); opacity: 1; }
-
     .nav-links .btn { padding: 10px 24px; font-size: 0.85rem; }
-
-    /* Mobile nav toggle */
-    .nav-toggle {
-      display: none;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 4px;
-    }
-    .nav-toggle span {
-      display: block;
-      width: 24px;
-      height: 2px;
-      background: var(--white);
-      margin: 5px 0;
-      transition: 0.3s;
-    }
+    .nav-toggle { display: none; background: none; border: none; cursor: pointer; padding: 4px; }
+    .nav-toggle span { display: block; width: 24px; height: 2px; background: var(--white); margin: 5px 0; transition: 0.3s; }
 
     @media (max-width: 768px) {
       .nav-toggle { display: block; }
       .nav-links {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 70%;
-        max-width: 300px;
-        height: 100vh;
-        background: #111;
-        flex-direction: column;
-        justify-content: center;
-        gap: 32px;
-        transition: right 0.3s;
-        padding: 40px;
+        position: fixed; top: 0; right: -100%; width: 70%; max-width: 300px; height: 100vh;
+        background: rgba(17,17,17,0.98); backdrop-filter: blur(20px);
+        flex-direction: column; justify-content: center; gap: 32px;
+        transition: right 0.4s cubic-bezier(0.16,1,0.3,1); padding: 40px;
       }
       .nav-links.open { right: 0; }
     }
 
-    /* ========================================
-       Hero
-       ======================================== */
+    /* ========== Hero ========== */
     .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
+      min-height: 100vh; display: flex; align-items: center;
+      position: relative; overflow: hidden;
+    }
+    /* Canvas for particle network */
+    #hero-canvas {
+      position: absolute; inset: 0; z-index: 0;
+    }
+    /* Gradient overlay */
+    .hero::after {
+      content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 40%;
+      background: linear-gradient(to top, var(--bg), transparent);
+      z-index: 1;
+    }
+    .hero-content { position: relative; z-index: 2; }
+    .hero-content h1 {
+      color: var(--white); margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, var(--white) 0%, var(--gold) 50%, var(--white) 100%);
+      background-size: 200% auto;
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: textShimmer 4s ease-in-out infinite;
+    }
+    @keyframes textShimmer {
+      0% { background-position: 0% center; }
+      50% { background-position: 100% center; }
+      100% { background-position: 0% center; }
+    }
+    .hero-content .subtitle {
+      font-size: clamp(1.1rem, 2vw, 1.3rem); color: var(--grey);
+      margin-bottom: 3rem; max-width: 600px; line-height: 1.8;
+    }
+    /* Hero word-by-word animation */
+    .hero-content .subtitle .word {
+      display: inline-block; opacity: 0; transform: translateY(15px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+    .hero-content .subtitle .word.show { opacity: 1; transform: translateY(0); }
+    .hero-btn-wrap { opacity: 0; transform: translateY(20px); transition: all 0.6s ease 1.8s; }
+    .hero-btn-wrap.show { opacity: 1; transform: translateY(0); }
+
+    /* Scrolling indicator */
+    .scroll-indicator {
+      position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+      z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px;
+      opacity: 0; animation: fadeInUp 1s ease 2.5s forwards;
+    }
+    .scroll-indicator span { font-size: 0.75rem; color: var(--dark-grey); letter-spacing: 0.15em; text-transform: uppercase; }
+    .scroll-line {
+      width: 1px; height: 40px; position: relative; overflow: hidden;
+      background: rgba(201,168,76,0.2);
+    }
+    .scroll-line::after {
+      content: ''; position: absolute; top: -100%; left: 0; width: 100%; height: 100%;
+      background: var(--gold); animation: scrollDown 2s ease-in-out infinite;
+    }
+    @keyframes scrollDown { 0% { top: -100%; } 50% { top: 100%; } 100% { top: 100%; } }
+    @keyframes fadeInUp { to { opacity: 1; } }
+
+    /* ========== Section Label (monospace accent) ========== */
+    .section-label {
+      font-family: var(--font-mono); font-size: 0.8rem; color: var(--gold);
+      letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .section-label::before {
+      content: ''; width: 24px; height: 1px; background: var(--gold);
     }
 
-    /* Subtle CSS grid background */
-    .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(201,168,76,0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(201,168,76,0.04) 1px, transparent 1px);
-      background-size: 60px 60px;
-      animation: gridShift 20s linear infinite;
-    }
-    @keyframes gridShift {
-      0% { transform: translate(0, 0); }
-      100% { transform: translate(60px, 60px); }
+    .section-intro {
+      font-size: clamp(1.05rem, 2vw, 1.2rem); max-width: 640px; margin-top: 8px; line-height: 1.8;
     }
 
-    .hero-content { position: relative; z-index: 1; }
-    .hero-content h1 { color: var(--white); margin-bottom: 1.5rem; }
-    .hero-content p {
-      font-size: clamp(1.05rem, 2vw, 1.2rem);
-      color: var(--grey);
-      margin-bottom: 2.5rem;
-      max-width: 600px;
+    /* ========== AI-First Difference — 3 Columns ========== */
+    .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 48px; margin-top: 60px; }
+    @media (max-width: 768px) { .three-col { grid-template-columns: 1fr; gap: 40px; } }
+    .ai-col {
+      padding: 40px; border: 1px solid var(--gold-dim); border-radius: 4px;
+      background: rgba(17,17,17,0.5); backdrop-filter: blur(10px);
+      position: relative; overflow: hidden;
+      transition: border-color 0.4s, transform 0.3s, box-shadow 0.4s;
     }
+    .ai-col:hover {
+      border-color: var(--gold); transform: translateY(-4px);
+      box-shadow: 0 20px 60px rgba(201,168,76,0.08);
+    }
+    /* Top glow line on hover */
+    .ai-col::before {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+      opacity: 0; transition: opacity 0.4s;
+    }
+    .ai-col:hover::before { opacity: 1; }
+    .ai-col h3 { color: var(--gold); font-family: var(--font-body); font-weight: 600; font-size: 1.15rem; }
+    .ai-col .metric {
+      font-family: var(--font-mono); font-size: 2.5rem; color: var(--white);
+      font-weight: 700; margin-bottom: 12px; display: block;
+    }
+    .counter { display: inline-block; }
 
-    /* ========================================
-       AI-First Difference — 3 Columns
-       ======================================== */
-    .three-col {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 48px;
-      margin-top: 60px;
-    }
-    @media (max-width: 768px) {
-      .three-col { grid-template-columns: 1fr; gap: 40px; }
-    }
-
-    .three-col h3 { color: var(--gold); }
-
-    /* ========================================
-       Capability Cards
-       ======================================== */
-    .card-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 32px;
-      margin-top: 60px;
-    }
-    @media (max-width: 768px) {
-      .card-grid { grid-template-columns: 1fr; }
-    }
-
+    /* ========== Capability Cards ========== */
+    .card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-top: 60px; }
+    @media (max-width: 768px) { .card-grid { grid-template-columns: 1fr; } }
     .card {
-      border: 1px solid rgba(201,168,76,0.2);
-      padding: clamp(28px, 4vw, 40px);
-      border-radius: 2px;
-      transition: border-color 0.3s;
+      border: 1px solid var(--gold-dim); padding: clamp(32px, 4vw, 48px);
+      border-radius: 4px; position: relative; overflow: hidden;
+      background: var(--bg); cursor: default;
+      transition: border-color 0.4s, box-shadow 0.4s;
     }
-    .card:hover { border-color: var(--gold); }
+    .card:hover {
+      border-color: rgba(201,168,76,0.5);
+      box-shadow: 0 0 40px rgba(201,168,76,0.05), inset 0 0 40px rgba(201,168,76,0.02);
+    }
+    /* Card inner glow on hover */
+    .card::after {
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(201,168,76,0.06), transparent 60%);
+      opacity: 0; transition: opacity 0.3s; pointer-events: none;
+    }
+    .card:hover::after { opacity: 1; }
     .card h3 { color: var(--white); }
+    .card p { font-size: 0.95rem; }
     .card .price {
-      color: var(--gold);
-      font-size: 0.9rem;
-      font-weight: 600;
-      margin-top: 16px;
-      display: inline-block;
+      color: var(--gold); font-family: var(--font-mono); font-size: 0.85rem;
+      font-weight: 500; margin-top: 20px; display: inline-block;
     }
 
-    /* ========================================
-       AI Stack Table (Terminal Style)
-       ======================================== */
-    .ai-stack {
-      border: 1px solid var(--gold);
-      border-radius: 2px;
-      overflow: hidden;
-      margin-top: 48px;
-      font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
-      font-size: 0.9rem;
+    /* ========== AI Stack Terminal ========== */
+    .terminal-wrap {
+      border: 1px solid var(--gold); border-radius: 4px; overflow: hidden;
+      margin-top: 48px; background: rgba(10,10,10,0.8);
     }
-    .ai-stack-header {
-      display: grid;
-      grid-template-columns: 1fr 2fr 2fr;
-      padding: 16px 24px;
-      background: rgba(201,168,76,0.08);
-      color: var(--gold);
-      font-weight: 600;
-      border-bottom: 1px solid var(--gold);
+    .terminal-bar {
+      display: flex; align-items: center; gap: 8px; padding: 12px 20px;
+      background: rgba(201,168,76,0.06); border-bottom: 1px solid var(--gold-dim);
     }
-    .ai-stack-row {
-      display: grid;
-      grid-template-columns: 1fr 2fr 2fr;
-      padding: 14px 24px;
-      border-bottom: 1px solid rgba(201,168,76,0.1);
-    }
-    .ai-stack-row:last-child { border-bottom: none; }
-    .ai-stack-row span:first-child { color: var(--white); font-weight: 500; }
-
-    @media (max-width: 768px) {
-      .ai-stack-header, .ai-stack-row {
-        grid-template-columns: 1fr;
-        gap: 4px;
-        padding: 14px 20px;
-      }
-      .ai-stack-header span:not(:first-child) { display: none; }
-      .ai-stack-row span::before {
-        display: inline;
-        font-weight: 600;
-        color: var(--gold);
-      }
-    }
-
-    /* ========================================
-       Comparison Table
-       ======================================== */
-    .comparison {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px;
-      margin-top: 60px;
-    }
-    @media (max-width: 768px) {
-      .comparison { grid-template-columns: 1fr; gap: 32px; }
-    }
-
-    .comparison-col h3 {
-      margin-bottom: 32px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid rgba(201,168,76,0.2);
-    }
-    .comparison-col.traditional h3 { color: var(--grey); }
-    .comparison-col.medici h3 { color: var(--gold); }
-
-    .comparison-item {
-      margin-bottom: 24px;
-    }
-    .comparison-item .label {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
+    .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .terminal-dot:nth-child(1) { background: #ff5f57; }
+    .terminal-dot:nth-child(2) { background: #febc2e; }
+    .terminal-dot:nth-child(3) { background: #28c840; }
+    .terminal-title {
+      margin-left: 12px; font-family: var(--font-mono); font-size: 0.75rem;
       color: var(--dark-grey);
-      margin-bottom: 4px;
     }
-    .comparison-item .value {
-      color: var(--grey);
-      font-size: 0.95rem;
+    .terminal-body { padding: 24px; font-family: var(--font-mono); font-size: 0.85rem; }
+    .terminal-line {
+      display: grid; grid-template-columns: 140px 1fr 1fr;
+      padding: 10px 0; border-bottom: 1px solid rgba(201,168,76,0.06);
+      opacity: 0; transform: translateX(-20px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
     }
+    .terminal-line.typed { opacity: 1; transform: translateX(0); }
+    .terminal-line:last-child { border-bottom: none; }
+    .terminal-line .layer { color: var(--gold); }
+    .terminal-line .action { color: var(--grey); }
+    .terminal-line .result { color: var(--white); }
+    @media (max-width: 768px) {
+      .terminal-line { grid-template-columns: 1fr; gap: 4px; padding: 12px 0; }
+    }
+    .terminal-cursor {
+      display: inline-block; width: 8px; height: 16px; background: var(--gold);
+      animation: blink 1s step-end infinite; margin-left: 4px; vertical-align: middle;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ========== Comparison ========== */
+    .comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 60px; }
+    @media (max-width: 768px) { .comparison { grid-template-columns: 1fr; gap: 32px; } }
+    .comparison-col { padding: 40px; border-radius: 4px; transition: opacity 0.6s; }
+    .comparison-col.traditional {
+      background: rgba(17,17,17,0.3); border: 1px solid rgba(85,85,85,0.2);
+    }
+    .comparison-col.medici {
+      background: rgba(201,168,76,0.03); border: 1px solid var(--gold-dim);
+      box-shadow: 0 0 60px rgba(201,168,76,0.05);
+    }
+    .comparison-col h3 { margin-bottom: 32px; padding-bottom: 16px; border-bottom: 1px solid rgba(201,168,76,0.15); }
+    .comparison-col.traditional h3 { color: var(--dark-grey); }
+    .comparison-col.medici h3 { color: var(--gold); }
+    .comparison-item { margin-bottom: 24px; }
+    .comparison-item .label {
+      font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase;
+      letter-spacing: 0.15em; color: var(--dark-grey); margin-bottom: 4px;
+    }
+    .comparison-item .value { font-size: 0.95rem; }
+    .traditional .comparison-item .value { color: var(--dark-grey); }
     .medici .comparison-item .value { color: var(--white); }
+    /* Dim traditional on reveal */
+    .comparison.in-view .traditional { opacity: 0.6; }
+    .comparison.in-view .medici { opacity: 1; }
 
-    /* ========================================
-       About / Founder
-       ======================================== */
-    .credentials {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin: 32px 0;
-      list-style: none;
-    }
+    /* ========== About / Credentials ========== */
+    .credentials { display: flex; flex-wrap: wrap; gap: 12px; margin: 32px 0; list-style: none; }
     .credentials li {
-      padding: 8px 16px;
-      border: 1px solid rgba(201,168,76,0.25);
-      border-radius: 2px;
-      font-size: 0.85rem;
-      color: var(--white);
+      padding: 10px 18px; border: 1px solid var(--gold-dim); border-radius: 2px;
+      font-size: 0.85rem; color: var(--white);
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .credentials li:hover {
+      border-color: var(--gold); background: rgba(201,168,76,0.05);
     }
 
-    /* ========================================
-       FAQ Accordion
-       ======================================== */
-    .faq-item {
-      border-bottom: 1px solid rgba(201,168,76,0.15);
-    }
+    /* ========== FAQ ========== */
+    .faq-item { border-bottom: 1px solid var(--gold-dim); }
     .faq-question {
-      width: 100%;
-      background: none;
-      border: none;
-      padding: 24px 0;
-      font-family: var(--font-body);
-      font-size: 1.05rem;
-      font-weight: 500;
-      color: var(--white);
-      text-align: left;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
+      width: 100%; background: none; border: none; padding: 28px 0;
+      font-family: var(--font-body); font-size: 1.1rem; font-weight: 500;
+      color: var(--white); text-align: left; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center; gap: 16px;
+      transition: color 0.3s;
     }
     .faq-question:hover { color: var(--gold); }
-    .faq-question::after {
-      content: '+';
-      font-size: 1.4rem;
-      color: var(--gold);
-      flex-shrink: 0;
-      transition: transform 0.3s;
+    .faq-icon {
+      width: 24px; height: 24px; position: relative; flex-shrink: 0;
     }
-    .faq-item.open .faq-question::after {
-      transform: rotate(45deg);
+    .faq-icon::before, .faq-icon::after {
+      content: ''; position: absolute; background: var(--gold);
+      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1);
     }
-    .faq-answer {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease, padding 0.3s;
-    }
-    .faq-item.open .faq-answer {
-      max-height: 300px;
-    }
-    .faq-answer p {
-      padding-bottom: 24px;
-      color: var(--grey);
-      line-height: 1.8;
-    }
+    .faq-icon::before { width: 24px; height: 1.5px; top: 50%; left: 0; transform: translateY(-50%); }
+    .faq-icon::after { width: 1.5px; height: 24px; left: 50%; top: 0; transform: translateX(-50%); }
+    .faq-item.open .faq-icon::after { transform: translateX(-50%) rotate(90deg); }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.16,1,0.3,1); }
+    .faq-item.open .faq-answer { max-height: 300px; }
+    .faq-answer p { padding-bottom: 28px; line-height: 1.8; }
 
-    /* ========================================
-       Final CTA
-       ======================================== */
-    .cta-final {
-      text-align: center;
+    /* ========== Final CTA ========== */
+    .cta-final { text-align: center; position: relative; }
+    .cta-final h2 {
+      font-size: clamp(2.5rem, 5vw, 4rem); margin-bottom: 1rem;
     }
-    .cta-final h2 { margin-bottom: 1rem; }
     .cta-final p { margin: 0 auto 2.5rem; }
-    .cta-final .email-link {
-      display: block;
-      margin-top: 20px;
-      color: var(--grey);
-      font-size: 0.95rem;
+    .cta-final .email-link { display: block; margin-top: 24px; color: var(--grey); font-size: 0.95rem; }
+    /* CTA background glow */
+    .cta-final::before {
+      content: ''; position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%); width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(201,168,76,0.06), transparent 70%);
+      pointer-events: none;
     }
 
-    /* ========================================
-       Footer
-       ======================================== */
-    footer {
-      padding: 60px 0 40px;
-      border-top: 1px solid rgba(201,168,76,0.15);
-    }
-    .footer-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      gap: 32px;
-    }
+    /* ========== Footer ========== */
+    footer { padding: 60px 0 40px; border-top: 1px solid var(--gold-dim); }
+    .footer-inner { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 32px; }
     .footer-brand .wordmark { font-size: 1.2rem; }
     .footer-brand p { font-size: 0.85rem; margin-top: 8px; }
     .footer-links { display: flex; gap: 24px; font-size: 0.85rem; }
     .footer-meta {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      margin-top: 40px;
-      padding-top: 24px;
-      border-top: 1px solid rgba(201,168,76,0.1);
-      font-size: 0.8rem;
-      color: var(--dark-grey);
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    /* ========================================
-       Section intro text
-       ======================================== */
-    .section-intro {
-      font-size: clamp(1.05rem, 2vw, 1.15rem);
-      max-width: 640px;
-      margin-top: 8px;
+      width: 100%; display: flex; justify-content: space-between; margin-top: 40px;
+      padding-top: 24px; border-top: 1px solid rgba(201,168,76,0.08);
+      font-size: 0.8rem; color: var(--dark-grey); flex-wrap: wrap; gap: 8px;
     }
 
     .text-center { text-align: center; }
     .text-center p { margin-left: auto; margin-right: auto; }
     .mt-48 { margin-top: 48px; }
+    .mt-60 { margin-top: 60px; }
+
+    /* Alt section bg */
+    .bg-elevated { background: var(--bg-elevated); }
   </style>
 </head>
 
 <body>
-  <!-- ========================================
-       Navigation
-       ======================================== -->
+  <!-- Cursor glow -->
+  <div class="cursor-glow" id="cursorGlow"></div>
+
+  <!-- Nav -->
   <nav aria-label="Main navigation">
     <div class="container nav-inner">
       <a href="#" class="wordmark" aria-label="MEDICI home">MEDICI</a>
@@ -519,37 +443,46 @@
   </nav>
 
   <main>
-    <!-- ========================================
-         Hero
-         ======================================== -->
+    <!-- Hero -->
     <section class="hero" id="hero">
+      <canvas id="hero-canvas"></canvas>
       <div class="container hero-content">
-        <h1>Growth, engineered.</h1>
-        <p>AI-first marketing infrastructure for startups and tech companies. We build the systems that scale your brand — faster and smarter than any traditional agency.</p>
-        <a href="#contact" class="btn">Book a Discovery Call</a>
+        <h1 id="hero-title">Growth, engineered.</h1>
+        <p class="subtitle" id="hero-subtitle">AI-first marketing infrastructure for startups and tech companies. We build the systems that scale your brand — faster and smarter than any traditional agency.</p>
+        <div class="hero-btn-wrap" id="hero-cta">
+          <a href="#contact" class="btn">Book a Discovery Call</a>
+        </div>
+      </div>
+      <div class="scroll-indicator">
+        <span>Scroll</span>
+        <div class="scroll-line"></div>
       </div>
     </section>
 
     <div class="divider"></div>
 
-    <!-- ========================================
-         The AI-First Difference
-         ======================================== -->
+    <!-- AI-First Difference -->
     <section id="ai-first">
-      <div class="container fade-in">
-        <h2>The AI-First Difference</h2>
-        <p class="section-intro">AI isn't a feature we bolt on. It's the operating system of everything we do.</p>
-        <div class="three-col">
-          <div>
-            <h3>10x Output</h3>
+      <div class="container">
+        <div class="fade-in">
+          <div class="section-label">01 — Why AI-First</div>
+          <h2>The AI-First Difference</h2>
+          <p class="section-intro">AI isn't a feature we bolt on. It's the operating system of everything we do.</p>
+        </div>
+        <div class="three-col stagger">
+          <div class="ai-col">
+            <span class="metric"><span class="counter" data-target="10">0</span>x</span>
+            <h3>Output</h3>
             <p>AI-powered content engines produce in days what traditional agencies deliver in weeks. Every piece is human-reviewed, strategically aligned, and on-brand.</p>
           </div>
-          <div>
-            <h3>Real-Time Intelligence</h3>
+          <div class="ai-col">
+            <span class="metric">Real-Time</span>
+            <h3>Intelligence</h3>
             <p>No more monthly PDF reports. Our AI systems monitor, analyze, and surface insights continuously — so we optimize in real-time, not in retrospect.</p>
           </div>
-          <div>
-            <h3>Compounding Systems</h3>
+          <div class="ai-col">
+            <span class="metric">∞</span>
+            <h3>Compounding</h3>
             <p>We don't run campaigns. We build marketing infrastructure — AI workflows that learn, improve, and compound over time. The longer we work together, the smarter your growth engine gets.</p>
           </div>
         </div>
@@ -558,35 +491,37 @@
 
     <div class="divider"></div>
 
-    <!-- ========================================
-         How We Work
-         ======================================== -->
-    <section id="how-we-work">
-      <div class="container fade-in">
-        <h2>How We Work</h2>
-        <p class="section-intro">We don't sell packages. We scope each engagement around what your company actually needs — then build the AI-powered system to deliver it.</p>
-        <div class="card-grid">
+    <!-- How We Work -->
+    <section id="how-we-work" class="bg-elevated">
+      <div class="container">
+        <div class="fade-in">
+          <div class="section-label">02 — Services</div>
+          <h2>How We Work</h2>
+          <p class="section-intro">We don't sell packages. We scope each engagement around what your company actually needs — then build the AI-powered system to deliver it.</p>
+        </div>
+        <div class="card-grid stagger">
           <div class="card">
             <h3>Brand &amp; Narrative</h3>
             <p>Positioning, messaging, voice, and investor narrative — all built on AI-driven market and competitor analysis.</p>
-            <span class="price">From €3,000/mo</span>
+            <span class="price">From €3,000/mo →</span>
           </div>
           <div class="card">
             <h3>Content Engine</h3>
             <p>Social, long-form, threads, newsletters, and SEO — powered by AI content pipelines with human editorial oversight.</p>
+            <span class="price">Modular</span>
           </div>
           <div class="card">
             <h3>Growth &amp; Distribution</h3>
             <p>Paid ads, PR, KOL programs, partnerships — with AI handling targeting, optimization, and personalization at scale.</p>
-            <span class="price">From €5,500/mo</span>
+            <span class="price">From €5,500/mo →</span>
           </div>
           <div class="card">
             <h3>Full-Stack Marketing</h3>
             <p>GTM strategy, launches, events, dashboards, investor content — the complete AI-augmented marketing department.</p>
-            <span class="price">From €8,000/mo</span>
+            <span class="price">From €8,000/mo →</span>
           </div>
         </div>
-        <div class="text-center mt-48">
+        <div class="text-center mt-60 fade-in">
           <p style="margin: 0 auto 1.5rem; color: var(--grey);">Every engagement starts with a discovery call.</p>
           <a href="#contact" class="btn">Book a Discovery Call</a>
         </div>
@@ -595,42 +530,29 @@
 
     <div class="divider"></div>
 
-    <!-- ========================================
-         How AI Powers Every Layer
-         ======================================== -->
+    <!-- AI Stack -->
     <section id="ai-stack">
-      <div class="container fade-in">
-        <h2>How AI Powers Every Layer</h2>
-        <div class="ai-stack">
-          <div class="ai-stack-header">
-            <span>Layer</span>
-            <span>What AI Does</span>
-            <span>The Result</span>
+      <div class="container">
+        <div class="fade-in">
+          <div class="section-label">03 — The Stack</div>
+          <h2>How AI Powers Every Layer</h2>
+        </div>
+        <div class="terminal-wrap" id="terminal">
+          <div class="terminal-bar">
+            <div class="terminal-dot"></div>
+            <div class="terminal-dot"></div>
+            <div class="terminal-dot"></div>
+            <span class="terminal-title">medici_stack.sh — AI Infrastructure</span>
           </div>
-          <div class="ai-stack-row">
-            <span>Content</span>
-            <span>Drafts, variants, SEO optimization</span>
-            <span>10x output, consistent quality</span>
-          </div>
-          <div class="ai-stack-row">
-            <span>Analytics</span>
-            <span>Real-time dashboards, AI summaries</span>
-            <span>Always-on intelligence</span>
-          </div>
-          <div class="ai-stack-row">
-            <span>Advertising</span>
-            <span>Auto-generated copy, A/B testing</span>
-            <span>Faster optimization cycles</span>
-          </div>
-          <div class="ai-stack-row">
-            <span>Outreach</span>
-            <span>Personalized at scale</span>
-            <span>5x response rates</span>
-          </div>
-          <div class="ai-stack-row">
-            <span>Reporting</span>
-            <span>Auto-generated weekly reports</span>
-            <span>Clients always informed</span>
+          <div class="terminal-body">
+            <div class="terminal-line"><span class="layer">Content</span><span class="action">Drafts, variants, SEO optimization</span><span class="result">10x output, consistent quality</span></div>
+            <div class="terminal-line"><span class="layer">Analytics</span><span class="action">Real-time dashboards, AI summaries</span><span class="result">Always-on intelligence</span></div>
+            <div class="terminal-line"><span class="layer">Advertising</span><span class="action">Auto-generated copy, A/B testing</span><span class="result">Faster optimization cycles</span></div>
+            <div class="terminal-line"><span class="layer">Outreach</span><span class="action">Personalized at scale</span><span class="result">5x response rates</span></div>
+            <div class="terminal-line"><span class="layer">Reporting</span><span class="action">Auto-generated weekly reports</span><span class="result">Clients always informed</span></div>
+            <div style="margin-top: 12px; color: var(--gold); font-family: var(--font-mono); font-size: 0.85rem;">
+              $ <span class="terminal-cursor"></span>
+            </div>
           </div>
         </div>
       </div>
@@ -638,14 +560,15 @@
 
     <div class="divider"></div>
 
-    <!-- ========================================
-         The Medici Difference (Comparison)
-         ======================================== -->
-    <section id="difference">
-      <div class="container fade-in">
-        <h2>The Medici Difference</h2>
-        <div class="comparison">
-          <div class="comparison-col traditional">
+    <!-- Comparison -->
+    <section id="difference" class="bg-elevated">
+      <div class="container">
+        <div class="fade-in">
+          <div class="section-label">04 — Why Medici</div>
+          <h2>The Medici Difference</h2>
+        </div>
+        <div class="comparison" id="comparison">
+          <div class="comparison-col traditional fade-in-left">
             <h3>Traditional Agency</h3>
             <div class="comparison-item"><div class="label">Speed</div><div class="value">Weeks per deliverable</div></div>
             <div class="comparison-item"><div class="label">Cost</div><div class="value">$10K+/mo retainers</div></div>
@@ -654,7 +577,7 @@
             <div class="comparison-item"><div class="label">Reporting</div><div class="value">Monthly PDFs</div></div>
             <div class="comparison-item"><div class="label">Adaptability</div><div class="value">Slow to pivot</div></div>
           </div>
-          <div class="comparison-col medici">
+          <div class="comparison-col medici fade-in-right">
             <h3>MEDICI</h3>
             <div class="comparison-item"><div class="label">Speed</div><div class="value">Days — AI accelerates everything</div></div>
             <div class="comparison-item"><div class="label">Cost</div><div class="value">From €3,000/mo — premium but efficient</div></div>
@@ -669,55 +592,57 @@
 
     <div class="divider"></div>
 
-    <!-- ========================================
-         Built By a Builder
-         ======================================== -->
+    <!-- About -->
     <section id="about">
-      <div class="container fade-in">
-        <h2>Built By a Builder</h2>
-        <p>Medici was founded by a marketing leader with 7+ years in Web3 and tech — not an agency person who discovered AI last year.</p>
-        <ul class="credentials" role="list">
+      <div class="container">
+        <div class="fade-in">
+          <div class="section-label">05 — Founder</div>
+          <h2>Built By a Builder</h2>
+          <p>Medici was founded by a marketing leader with 7+ years in Web3 and tech — not an agency person who discovered AI last year.</p>
+        </div>
+        <ul class="credentials stagger" role="list">
           <li>Sui Foundation Ambassador</li>
           <li>Marketing Manager, Interest Labs — 1st Place Sui Overflow Hackathon</li>
           <li>Community Lead, DeepSquare</li>
-          <li>Lugano Plan ₿ Bitcoin Challenge Winner (with Tether/Paolo Ardoino)</li>
+          <li>Lugano Plan ₿ Bitcoin Challenge Winner</li>
           <li>Speaker &amp; Ecosystem Builder across Web3</li>
         </ul>
-        <p>Every client works directly with the founder. No handoffs. No junior team. Senior strategy meets AI-powered execution.</p>
+        <p class="fade-in">Every client works directly with the founder. No handoffs. No junior team. Senior strategy meets AI-powered execution.</p>
       </div>
     </section>
 
     <div class="divider"></div>
 
-    <!-- ========================================
-         FAQ
-         ======================================== -->
-    <section id="faq">
-      <div class="container fade-in">
-        <h2>Frequently Asked Questions</h2>
-        <div class="mt-48">
+    <!-- FAQ -->
+    <section id="faq" class="bg-elevated">
+      <div class="container">
+        <div class="fade-in">
+          <div class="section-label">06 — FAQ</div>
+          <h2>Frequently Asked Questions</h2>
+        </div>
+        <div class="mt-48 fade-in">
           <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">What does AI-first actually mean?</button>
+            <button class="faq-question" aria-expanded="false">What does AI-first actually mean?<span class="faq-icon"></span></button>
             <div class="faq-answer" role="region"><p>AI isn't a bolt-on tool for us — it's the operating system. Every workflow, from content creation to analytics to outreach, is built on AI pipelines. This means faster delivery, smarter optimization, and systems that compound over time. But every output is human-reviewed and strategically directed.</p></div>
           </div>
           <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">Do you only work with crypto/Web3 companies?</button>
+            <button class="faq-question" aria-expanded="false">Do you only work with crypto/Web3 companies?<span class="faq-icon"></span></button>
             <div class="faq-answer" role="region"><p>No. While we have deep roots in Web3, our model works for any startup or tech company. If you're building something ambitious and need marketing infrastructure that scales, we're a fit.</p></div>
           </div>
           <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">What's the minimum commitment?</button>
+            <button class="faq-question" aria-expanded="false">What's the minimum commitment?<span class="faq-icon"></span></button>
             <div class="faq-answer" role="region"><p>3 months. Marketing systems need time to build momentum. We're not interested in one-off projects — we build infrastructure that compounds.</p></div>
           </div>
           <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">How fast can you start?</button>
+            <button class="faq-question" aria-expanded="false">How fast can you start?<span class="faq-icon"></span></button>
             <div class="faq-answer" role="region"><p>Most engagements kick off within a week of the discovery call. AI-first means no lengthy onboarding — we move fast.</p></div>
           </div>
           <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">Why not just hire in-house?</button>
+            <button class="faq-question" aria-expanded="false">Why not just hire in-house?<span class="faq-icon"></span></button>
             <div class="faq-answer" role="region"><p>An in-house marketing hire takes 3-6 months to recruit, onboard, and ramp up — and costs €60-100K+/year before tools and overhead. With Medici, you get a senior strategist + AI-powered execution from day one, at a fraction of the cost.</p></div>
           </div>
           <div class="faq-item">
-            <button class="faq-question" aria-expanded="false">What AI tools do you use?</button>
+            <button class="faq-question" aria-expanded="false">What AI tools do you use?<span class="faq-icon"></span></button>
             <div class="faq-answer" role="region"><p>We use a combination of frontier AI models (Claude, GPT-4), custom automation workflows, and purpose-built pipelines for content, analytics, and outreach. The specific stack evolves — we always use whatever is best. The point isn't the tools, it's the system.</p></div>
           </div>
         </div>
@@ -726,9 +651,7 @@
 
     <div class="divider"></div>
 
-    <!-- ========================================
-         Final CTA
-         ======================================== -->
+    <!-- Final CTA -->
     <section id="contact">
       <div class="container cta-final fade-in">
         <h2>Let's build your growth engine.</h2>
@@ -739,9 +662,7 @@
     </section>
   </main>
 
-  <!-- ========================================
-       Footer
-       ======================================== -->
+  <!-- Footer -->
   <footer>
     <div class="container">
       <div class="footer-inner">
@@ -750,8 +671,8 @@
           <p>Growth, engineered.</p>
         </div>
         <div class="footer-links">
-          <a href="https://x.com/SatoshiMedici" target="_blank" rel="noopener noreferrer" aria-label="MEDICI on X (Twitter)">X</a>
-          <a href="#" target="_blank" rel="noopener noreferrer" aria-label="MEDICI on LinkedIn">LinkedIn</a>
+          <a href="https://x.com/SatoshiMedici" target="_blank" rel="noopener noreferrer">X</a>
+          <a href="#" target="_blank" rel="noopener noreferrer">LinkedIn</a>
           <a href="mailto:hello@medici.codes">hello@medici.codes</a>
         </div>
       </div>
@@ -762,58 +683,207 @@
     </div>
   </footer>
 
-  <!-- ========================================
-       JavaScript
-       ======================================== -->
   <script>
-    /* --- Nav scroll behavior --- */
+    /* ========== Particle Network (Hero Canvas) ========== */
+    (function() {
+      const canvas = document.getElementById('hero-canvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+      let mouse = { x: null, y: null };
+      const isMobile = window.matchMedia('(max-width: 768px)').matches;
+      const particleCount = isMobile ? 40 : 80;
+      const connectionDist = isMobile ? 120 : 180;
+
+      function resize() {
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      class Particle {
+        constructor() {
+          this.x = Math.random() * canvas.width;
+          this.y = Math.random() * canvas.height;
+          this.vx = (Math.random() - 0.5) * 0.4;
+          this.vy = (Math.random() - 0.5) * 0.4;
+          this.r = Math.random() * 2 + 1;
+        }
+        update() {
+          this.x += this.vx; this.y += this.vy;
+          if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+          if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+        }
+        draw() {
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+          ctx.fillStyle = 'rgba(201,168,76,0.5)';
+          ctx.fill();
+        }
+      }
+
+      for (let i = 0; i < particleCount; i++) particles.push(new Particle());
+
+      canvas.addEventListener('mousemove', e => {
+        const rect = canvas.getBoundingClientRect();
+        mouse.x = e.clientX - rect.left;
+        mouse.y = e.clientY - rect.top;
+      });
+      canvas.addEventListener('mouseleave', () => { mouse.x = null; mouse.y = null; });
+
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        // Draw connections
+        for (let i = 0; i < particles.length; i++) {
+          for (let j = i + 1; j < particles.length; j++) {
+            const dx = particles[i].x - particles[j].x;
+            const dy = particles[i].y - particles[j].y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < connectionDist) {
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(particles[j].x, particles[j].y);
+              ctx.strokeStyle = `rgba(201,168,76,${0.15 * (1 - dist / connectionDist)})`;
+              ctx.lineWidth = 0.5;
+              ctx.stroke();
+            }
+          }
+          // Mouse connection
+          if (mouse.x !== null) {
+            const dx = particles[i].x - mouse.x;
+            const dy = particles[i].y - mouse.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 200) {
+              ctx.beginPath();
+              ctx.moveTo(particles[i].x, particles[i].y);
+              ctx.lineTo(mouse.x, mouse.y);
+              ctx.strokeStyle = `rgba(201,168,76,${0.25 * (1 - dist / 200)})`;
+              ctx.lineWidth = 0.8;
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(animate);
+      }
+      animate();
+    })();
+
+    /* ========== Hero Text Animation ========== */
+    (function() {
+      const subtitle = document.getElementById('hero-subtitle');
+      const text = subtitle.textContent;
+      subtitle.textContent = '';
+      const words = text.split(' ');
+      words.forEach((word, i) => {
+        const span = document.createElement('span');
+        span.className = 'word';
+        span.textContent = word + ' ';
+        span.style.transitionDelay = (i * 0.04 + 0.4) + 's';
+        subtitle.appendChild(span);
+      });
+      // Trigger after small delay
+      setTimeout(() => {
+        subtitle.querySelectorAll('.word').forEach(w => w.classList.add('show'));
+        document.getElementById('hero-cta').classList.add('show');
+      }, 100);
+    })();
+
+    /* ========== Cursor Glow ========== */
+    if (!window.matchMedia('(max-width: 768px)').matches) {
+      const glow = document.getElementById('cursorGlow');
+      document.addEventListener('mousemove', e => {
+        glow.style.left = e.clientX + 'px';
+        glow.style.top = e.clientY + 'px';
+        glow.classList.add('active');
+      });
+    }
+
+    /* ========== Nav ========== */
     const nav = document.querySelector('nav');
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 40);
     }, { passive: true });
 
-    /* --- Mobile nav toggle --- */
     const toggle = document.querySelector('.nav-toggle');
     const links = document.querySelector('.nav-links');
     toggle.addEventListener('click', () => {
       const open = links.classList.toggle('open');
       toggle.setAttribute('aria-expanded', open);
     });
-    // Close mobile nav on link click
     links.querySelectorAll('a').forEach(a => {
-      a.addEventListener('click', () => {
-        links.classList.remove('open');
-        toggle.setAttribute('aria-expanded', 'false');
+      a.addEventListener('click', () => { links.classList.remove('open'); toggle.setAttribute('aria-expanded', 'false'); });
+    });
+
+    /* ========== Scroll Observer ========== */
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.fade-in, .fade-in-left, .fade-in-right, .stagger').forEach(el => obs.observe(el));
+
+    /* ========== Counter Animation ========== */
+    const counterObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const el = e.target;
+          const target = parseInt(el.dataset.target);
+          let current = 0;
+          const step = () => {
+            current += Math.ceil(target / 20);
+            if (current >= target) { el.textContent = target; return; }
+            el.textContent = current;
+            requestAnimationFrame(step);
+          };
+          step();
+          counterObs.unobserve(el);
+        }
+      });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.counter').forEach(el => counterObs.observe(el));
+
+    /* ========== Terminal Typing Effect ========== */
+    const termObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const lines = e.target.querySelectorAll('.terminal-line');
+          lines.forEach((line, i) => {
+            setTimeout(() => line.classList.add('typed'), i * 250);
+          });
+          termObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.3 });
+    document.querySelectorAll('#terminal').forEach(el => termObs.observe(el));
+
+    /* ========== Comparison Dim Effect ========== */
+    const compObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('in-view'); compObs.unobserve(e.target); }
+      });
+    }, { threshold: 0.4 });
+    document.querySelectorAll('.comparison').forEach(el => compObs.observe(el));
+
+    /* ========== Card Mouse Glow ========== */
+    document.querySelectorAll('.card').forEach(card => {
+      card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty('--mouse-x', ((e.clientX - rect.left) / rect.width * 100) + '%');
+        card.style.setProperty('--mouse-y', ((e.clientY - rect.top) / rect.height * 100) + '%');
       });
     });
 
-    /* --- Scroll-triggered fade-in --- */
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.classList.add('visible');
-          observer.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.15 });
-
-    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-    /* --- FAQ Accordion --- */
+    /* ========== FAQ Accordion ========== */
     document.querySelectorAll('.faq-question').forEach(btn => {
       btn.addEventListener('click', () => {
         const item = btn.parentElement;
         const isOpen = item.classList.contains('open');
-        // Close all
         document.querySelectorAll('.faq-item.open').forEach(i => {
           i.classList.remove('open');
           i.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
         });
-        // Toggle current
-        if (!isOpen) {
-          item.classList.add('open');
-          btn.setAttribute('aria-expanded', 'true');
-        }
+        if (!isOpen) { item.classList.add('open'); btn.setAttribute('aria-expanded', 'true'); }
       });
     });
   </script>
